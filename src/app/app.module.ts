@@ -14,7 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
 
@@ -48,7 +48,8 @@ import { WorkoutService } from './services/workout.service';
       deps: [COMPILER_OPTIONS],
     },
     { provide: Compiler, useFactory: createCompiler, deps: [CompilerFactory] },
-    WorkoutService
+    WorkoutService,
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}
   ],
 })
 export class AppModule {}

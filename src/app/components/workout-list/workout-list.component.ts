@@ -9,7 +9,7 @@ import { WorkoutService } from '../../services/workout.service';
   styleUrls: ['./workout-list.component.css'],
 })
 export class WorkoutListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'workouts'];
+  displayedColumns: string[] = ['Name', 'Workouts','Number of Workouts','Total Workout Minutes'];
   workoutTypes: string[] = ['Running', 'Cycling', 'Swimming', 'Yoga'];
   users = new MatTableDataSource<any>([]);
   filteredUsers = new MatTableDataSource<any>([]);
@@ -20,7 +20,34 @@ export class WorkoutListComponent implements OnInit {
 
   ngOnInit(): void {
     this.users.data = this.workoutService.getUsers();
-    this.filteredUsers.data = this.users.data;
+    console.table(this.users.data);
+    const groupedData = this.users.data.reduce((acc, obj) => {
+      const key = obj.name;
+      if (!acc[key]) {
+        acc[key] = { id:0,name:key,type:'', minutes: 0,numberofworkouts:0 };
+        acc[key].id=obj.id;
+      }
+      acc[key].numberofworkouts=obj.workouts.length;
+      let i=0;
+      while(i<obj.workouts.length){
+        acc[key].minutes += obj.workouts[i].minutes;
+      
+        acc[key].type+=obj.workouts[i].type;
+        acc[key].type+=",";
+        
+        i++;
+        
+      }
+
+     
+      return acc;
+    }, {});
+   
+
+
+    
+    this.filteredUsers.data = Object.values(groupedData);
+    console.table(groupedData);
     this.filteredUsers.paginator = this.paginator;
   }
 
@@ -35,4 +62,11 @@ export class WorkoutListComponent implements OnInit {
       user.workouts.some((workout) => workout.type === filterValue)
     );
   }
+}
+
+interface WorkoutInter {
+  id: number;
+  name: string;
+  type: string;
+  minutes: number;
 }
