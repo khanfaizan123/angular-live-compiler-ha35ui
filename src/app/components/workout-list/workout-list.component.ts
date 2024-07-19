@@ -64,7 +64,7 @@ export class WorkoutListComponent implements OnInit ,OnChanges {
         };
         acc[key].id = obj.id;
       }
-      acc[key].numberofworkouts = obj.workouts.length;
+      acc[key].numberofworkouts += obj.workouts.length;
       let i = 0;
       const uniqueTypes = new Set(acc[key].type.split(",").filter(Boolean));
 
