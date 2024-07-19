@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,FormBuilder } from '@angular/forms';
+import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { WorkoutService } from '../../services/workout.service';
 
 
@@ -12,20 +12,22 @@ export class WorkoutFormComponent implements OnInit {
   workoutForm: FormGroup;
   workoutTypes: string[] = ['Running', 'Cycling', 'Swimming', 'Yoga'];
 
-  constructor(private fb: FormBuilder,private workoutService:WorkoutService) {
+  constructor(private fb: FormBuilder, private workoutService: WorkoutService) {
     this.workoutForm = this.fb.group({
-      name: [''],
-      type: [''],
-      minutes: [0],
+      name: ['', Validators.required],
+      type: ['Running', Validators.required],
+      minutes: [0, [Validators.required, Validators.min(1)]],
     });
   }
 
   ngOnInit(): void {}
 
   onSubmit() {
-    const { name, type, minutes } = this.workoutForm.value;
-    const newUser = { id: Date.now(), name, workouts: [{ type, minutes }] };
-    this.workoutService.addUser(newUser);
-    this.workoutForm.reset();
+    if (this.workoutForm.valid) {
+      const { name, type, minutes } = this.workoutForm.value;
+      const newUser = { id: Date.now(), name, workouts: [{ type, minutes }] };
+      this.workoutService.addUser(newUser);
+      this.workoutForm.reset();
+    }
   }
 }

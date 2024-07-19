@@ -10,18 +10,21 @@ import { WorkoutService } from '../../services/workout.service';
 })
 export class WorkoutListComponent implements OnInit {
   displayedColumns: string[] = ['Name', 'Workouts','Number of Workouts','Total Workout Minutes'];
-  workoutTypes: string[] = ['Running', 'Cycling', 'Swimming', 'Yoga'];
+
+  workoutTypes: string[] = ['All','Running', 'Cycling', 'Swimming', 'Yoga'];
   users = new MatTableDataSource<any>([]);
   filteredUsers = new MatTableDataSource<any>([]);
+  selectedValue: string = 'All';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private workoutService: WorkoutService) {}
-
+groupedData:any[]=[];
   ngOnInit(): void {
-    this.users.data = this.workoutService.getUsers();
+    this.users.data=this.workoutService.getUsers();
+    
     console.table(this.users.data);
-    const groupedData = this.users.data.reduce((acc, obj) => {
+    this.groupedData = this.users.data.reduce((acc, obj) => {
       const key = obj.name;
       if (!acc[key]) {
         acc[key] = { id:0,name:key,type:'', minutes: 0,numberofworkouts:0 };
@@ -29,15 +32,21 @@ export class WorkoutListComponent implements OnInit {
       }
       acc[key].numberofworkouts=obj.workouts.length;
       let i=0;
+      const uniqueTypes = new Set(acc[key].type.split(',').filter(Boolean));
+
       while(i<obj.workouts.length){
         acc[key].minutes += obj.workouts[i].minutes;
       
-        acc[key].type+=obj.workouts[i].type;
-        acc[key].type+=",";
+       
+         uniqueTypes.add(obj.workouts[i].type);
+
         
         i++;
         
       }
+      acc[key].type = Array.from(uniqueTypes).join(',');
+
+
 
      
       return acc;
@@ -46,9 +55,8 @@ export class WorkoutListComponent implements OnInit {
 
 
     
-    this.filteredUsers.data = Object.values(groupedData);
-    console.table(groupedData);
-    this.filteredUsers.paginator = this.paginator;
+    this.filteredUsers.data = Object.values(this.groupedData);
+    console.table(this.groupedData);
   }
 
   applyFilter(event: Event) {
@@ -58,10 +66,18 @@ export class WorkoutListComponent implements OnInit {
   }
 
   applyTypeFilter(filterValue: string) {
-    this.filteredUsers.data = this.users.data.filter((user) =>
-      user.workouts.some((workout) => workout.type === filterValue)
-    );
+    if (filterValue === 'All') {
+      this.filteredUsers.data = Object.values(this.groupedData);
+    } else {
+      this.filteredUsers.data = Object.values(this.groupedData).filter((user) =>
+        user.type.includes(filterValue)
+      );
+    }
   }
+
+  ngAfterViewInit() {
+    this.filteredUsers.paginator = this.paginator;
+  } 
 }
 
 interface WorkoutInter {

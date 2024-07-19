@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 interface Workout {
   type: string;
@@ -15,7 +16,7 @@ interface User {
 @Injectable()
 export class WorkoutService {
 
-
+ 
 
   private users: User[] = [
     { id: 1, name: 'John Doe', workouts: [{ type: 'Running', minutes: 30 }, { type: 'Cycling', minutes: 45 }] },
@@ -32,6 +33,7 @@ export class WorkoutService {
   addUser(user: User) {
     const users = this.getUsers();
     users.push(user);
+   
     localStorage.setItem('users', JSON.stringify(users));
   }
 

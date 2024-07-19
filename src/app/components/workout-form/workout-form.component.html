@@ -1,21 +1,32 @@
-<form  [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
+<form style="display: flex;gap:1rem;flex-flow:wrap;" [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill">
-    <mat-label>Username</mat-label>
+    <mat-label >Username</mat-label>
     <input matInput formControlName="name">
+    <mat-error *ngIf="workoutForm.get('name').hasError('required')">
+      Username is required
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Workout Type</mat-label>
+    <mat-label >Workout Type</mat-label>
     <mat-select formControlName="type">
       <mat-option *ngFor="let type of workoutTypes" [value]="type">{{ type }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="workoutForm.get('type').hasError('required')">
+      Workout Type is required
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Workout Minutes</mat-label>
+    <mat-label >Workout Minutes</mat-label>
     <input matInput formControlName="minutes" type="number">
+    <mat-error *ngIf="workoutForm.get('minutes').hasError('required')">
+      Workout Minutes are required
+    </mat-error>
+    <mat-error *ngIf="workoutForm.get('minutes').hasError('min')">
+      Workout Minutes must be at least 1
+    </mat-error>
   </mat-form-field>
-
-  <button mat-fab color="primary" type="submit">Add Workout</button>
+  <button mat-raised-button style="height: fit-content;" color="primary" type="submit">Add Workout</button>
 
 </form>
