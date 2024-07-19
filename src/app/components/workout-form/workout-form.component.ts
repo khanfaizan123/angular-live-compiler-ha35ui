@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { WorkoutService } from '../../services/workout.service';
 
@@ -11,12 +11,12 @@ import { WorkoutService } from '../../services/workout.service';
 export class WorkoutFormComponent implements OnInit {
   workoutForm: FormGroup;
   workoutTypes: string[] = ['Running', 'Cycling', 'Swimming', 'Yoga'];
-
-  constructor(private fb: FormBuilder, private workoutService: WorkoutService) {
+  workouts: any[] = [];
+  constructor(private fb: FormBuilder, private workoutService: WorkoutService,private cdr:ChangeDetectorRef) {
     this.workoutForm = this.fb.group({
       name: ['', Validators.required],
-      type: ['Running', Validators.required],
-      minutes: [0, [Validators.required, Validators.min(1)]],
+      type: ['', Validators.required],
+      minutes: ['', [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -25,9 +25,20 @@ export class WorkoutFormComponent implements OnInit {
   onSubmit() {
     if (this.workoutForm.valid) {
       const { name, type, minutes } = this.workoutForm.value;
+      this.workouts = [...this.workouts, this.workoutForm.value];
       const newUser = { id: Date.now(), name, workouts: [{ type, minutes }] };
       this.workoutService.addUser(newUser);
-      this.workoutForm.reset();
+      //this.workoutForm.reset();
+      this.workoutForm.reset({
+        name: null,
+        type: null,
+        minutes: null,
+      });
+      this.cdr.detectChanges();
+  
+      // Mark the entire form as pristine and untouched
+      this.workoutForm.markAsPristine();
+      this.workoutForm.markAsUntouched();
     }
   }
 }
