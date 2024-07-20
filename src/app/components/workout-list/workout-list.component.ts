@@ -31,7 +31,7 @@ export class WorkoutListComponent implements OnInit ,OnChanges {
   workoutTypes: string[] = ["All", "Running", "Cycling", "Swimming", "Yoga"];
   users = new MatTableDataSource<any>([]);
   filteredUsers = new MatTableDataSource<any>([]);
-  selectedValue: string = "";
+  selectedValue: string = "All";
   @Input()data:any; 
   
   @ViewChild(MatPaginator) paginator: MatPaginator;

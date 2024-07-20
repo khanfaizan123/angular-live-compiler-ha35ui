@@ -2,14 +2,16 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
       "outDir": "./out-tsc/app",
-      "types": []
+      "types": ["node"],
+      "baseUrl": "./"
     },
     "files": [
       "main.ts",
       "polyfills.ts"
     ],
     "include": [
-      "src/**/*.d.ts"
+      "src/**/*.d.ts",
+      "test.ts"
     ]
   }
   

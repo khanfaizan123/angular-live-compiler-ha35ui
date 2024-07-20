@@ -1,3 +1,9 @@
 # angular-live-compiler-ha35ui
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/khanfaizan123/angular-live-compiler-ha35ui)
+=============================== Coverage summary ===============================
+Statements   : 82.85% ( 29/35 )
+Branches     : 37.5% ( 3/8 )
+Functions    : 83.33% ( 5/6 )
+Lines        : 80.64% ( 25/31 )
+================================================================================
+
