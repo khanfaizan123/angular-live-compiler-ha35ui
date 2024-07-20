@@ -7,3 +7,10 @@ Functions    : 83.33% ( 5/6 )
 Lines        : 80.64% ( 25/31 )
 ================================================================================
 
+ To run locally->
+ clone using github link
+ npm i
+ ng serve
+
+ Library used->
+ Angular material
