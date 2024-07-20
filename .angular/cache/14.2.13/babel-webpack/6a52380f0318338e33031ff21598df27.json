@@ -1,0 +1,1 @@
+{"ast":null,"code":"// src/environments/environment.ts\nexport const environment = {\n  production: false,\n  // Add any other environment-specific settings here\n  apiUrl: 'http://localhost:4200' // Example setting\n\n};","map":null,"metadata":{},"sourceType":"module"}
